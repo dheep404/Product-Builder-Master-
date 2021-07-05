@@ -1,7 +1,7 @@
 Product Builder
 =========
 
-A customizable and responsive product builder for your online store.
+A customizable and responsive product builder for computors shopify store
 
 [Article on CodyHouse](https://codyhouse.co/gem/product-builder/)
 
