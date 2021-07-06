@@ -116,7 +116,7 @@ jQuery(document).ready(function($){
 					optionsContent = '';
 
 				if( selectedOptions.length == 0 ) {
-					optionsContent = '<li><p>No Accessories selected;</p></li>';
+					optionsContent = '<li><p>No Extras selected</p></li>';
 				} else {
 					selectedOptions.each(function(){
 						optionsContent +='<li><p>'+$(this).find('p').text()+'</p></li>';
