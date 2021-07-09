@@ -1,5 +1,3 @@
-
-
 jQuery(document).ready(function ($) {
 	function ProductBuilder(element) {
 		this.element = element;
@@ -19,7 +17,7 @@ jQuery(document).ready(function ($) {
 		//used to check if the builder content has been loaded properly
 		this.loaded = true;
 
-		//bind builder events
+		// bind builder events
 		this.bindEvents();
 	}
 
@@ -101,31 +99,33 @@ jQuery(document).ready(function ($) {
 		var self = this;
 		this.steps.each(function () {
 			//this function may need to be updated according to your builder steps and summary
-
 			var step = $(this);
-			if ($(this).data('selection') == 'accessories') {
-				// move to summary page
+			if ($(this).data('selection') == 'colors') {
+				// create the Color summary
+				var colorSelected = $(this).find('.cd-product-customizer').find('.selected'),
+					color = colorSelected.children('a').data('color'),
+					colorName = colorSelected.data('content'),
+					imageSelected = $(this).find('.cd-product-previews').find('.selected img').attr('src');
+
+						self.summary.find('.summary-color').find('.color-label').text (colorName).siblings('.color-swatch').attr('data-color', color);
+						self.summary.find('.product-preview').attr('src', imageSelected);
+				
+				} else if( $(this).data('selection') == 'accessories' ) {
 				var selectedOptions = $(this).find('.js-option.selected'),
 					optionsContent = '';
 
-				// if no options are selected 
 				if (selectedOptions.length == 0) {
-					optionsContent = "None"
+					optionsContent = '<li><p>No Extras selected</p></li>';
 				} else {
-					// Fiding accessories names
 					selectedOptions.each(function () {
-						optionsContent += '<li><p>' + $(this).find('p').text() + '</p></>';
+						optionsContent += '<li><p>' + $(this).find('p').text() + '</p></li>';
 					});
 				}
 
-				// Adding accessories names
-				self.summary.find('.summary-accessories').children('li').end().append($(optionsContent));
+				self.summary.find('.summary-accessories').children('li').remove().end().append($(optionsContent));
 			}
 		});
 	}
-
-
-
 
 	ProductBuilder.prototype.updateListOptions = function (listItem) {
 		var self = this;
