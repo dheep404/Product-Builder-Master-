@@ -6,7 +6,7 @@ jQuery(document).ready(function ($) {
 		this.stepsWrapper = this.element.children('.cd-builder-steps');
 		this.steps = this.element.find('.builder-step');
 		//store some specific bulider steps
-		this.models = this.element.find('[data-selection="models"]');
+		this.packages = this.element.find('[data-selection="packages"]');
 		this.summary;
 		this.optionsLists = this.element.find('.options-list');
 		//bottom summary 
@@ -97,31 +97,70 @@ jQuery(document).ready(function ($) {
 		this.secondaryNavigation.find('.nav-item.prev').find('li').eq(nextStep).addClass('visible').removeClass('visited').prevAll().removeClass('visited').addClass('visited').end().nextAll().removeClass('visible visited');
 	}
 
+	// ** SUMMARY PAGE **
+
+
 	ProductBuilder.prototype.createSummary = function () {
 		var self = this;
+		var optionsContent = '';
 		this.steps.each(function () {
 			//this function may need to be updated according to your builder steps and summary
 			var step = $(this);
-			if ($(this).data('selection') == 'accessories') {
-				// move to summary page
-				var selectedOptions = $(this).find('.js-option.selected'),
-					optionsContent = '';
 
-				// if no options are selected 
+			if ($(this).data('selection') != 'packages') {
+				var selectedOptions = $(this).find('.js-option.selected')
+
 				if (selectedOptions.length == 0) {
-					optionsContent = "None"
+					return
 				} else {
-					// Fiding accessories names
 					selectedOptions.each(function () {
-						optionsContent += '<li><p>' + $(this).find('p').text() + '</p></>';
+						console.log('here', $(this).find('p').text())
+						optionsContent += '<li><p>' + $(this).find('p').text() + '</p></li>';
 					});
 				}
-
-				// Adding accessories names
-				self.summary.find('.summary-accessories').children('li').end().append($(optionsContent));
 			}
+			console.log('hi', $(this).data('selection'))
+
 		});
+
+		if (!optionsContent) optionsContent = "<li><p>No Accessories selected;</p></li>"
+
+
+		console.log(optionsContent)
+		self.summary.find('.summary-accessories').children('li').remove().end().append($(optionsContent));
+
 	}
+
+
+
+	// ProductBuilder.prototype.createSummary = function () {
+	// 	var self = this;
+	// 	this.steps.each(function () {
+	// 		//this function may need to be updated according to your builder steps and summary
+
+	// 		var step = $(this);
+	// 		if ($(this).data('selection') == 'accessories') {
+	// 			// move to summary page
+	// 			var selectedOptions = $(this).find('.js-option.selected'),
+	// 				optionsContent = '';
+	// 			console.log(selectedOptions)
+
+	// 			// if no options are selected 
+	// 			if (selectedOptions.length == 0) {
+	// 				optionsContent = "None"
+	// 			} else {
+	// 				// Fiding accessories names
+	// 				selectedOptions.each(function () {
+	// 					optionsContent += '<li><p>' + $(this).find('p').text() + '</p></>';
+	// 				});
+	// 			}
+
+	// 			// Adding accessories names
+	// 			console.log(optionsContent)
+	// 			self.summary.find('.summary-accessories').children('li').remove().end().append($(optionsContent));
+	// 		}
+	// 	});
+	// }
 
 
 
@@ -144,7 +183,7 @@ jQuery(document).ready(function ($) {
 			//toggle the option just selected
 			listItem.toggleClass('selected');
 			//update totalPrice - only if the step is not the Models step
-			(listItem.parents('[data-selection="models"]').length == 0) && self.updatePrice(price);
+			(listItem.parents('[data-selection="packages"]').length == 0) && self.updatePrice(price);
 		} else {
 			//more than one options can be selected - just need to add/remove the one just clicked
 			var price = (listItem.hasClass('selected')) ? -Number(listItem.data('price')) : Number(listItem.data('price'));
@@ -154,7 +193,7 @@ jQuery(document).ready(function ($) {
 			self.updatePrice(price);
 		}
 
-		if (listItem.parents('[data-selection="models"]').length > 0) {
+		if (listItem.parents('[data-selection="packages"]').length > 0) {
 			//since a model has been selected/deselected, you need to update the builder content
 			self.updateModelContent(listItem);
 		}
@@ -171,7 +210,7 @@ jQuery(document).ready(function ($) {
 
 			//need to update the content of the builder according to the selected product
 			//first - remove the contet which refers to a different model
-			this.models.siblings('li').remove();
+			this.packages.siblings('li').remove();
 			//second - load the new content
 			$.ajax({
 				type: "GET",
@@ -182,7 +221,7 @@ jQuery(document).ready(function ($) {
 					model.siblings().removeClass('loaded');
 				},
 				success: function (data) {
-					self.models.after(data);
+					self.packages.after(data);
 					self.loaded = true;
 					model.addClass('loaded');
 					//activate top and bottom navigations
@@ -213,7 +252,7 @@ jQuery(document).ready(function ($) {
 			//update price
 			this.totPriceWrapper.text('0');
 
-			this.models.find('.loaded').removeClass('loaded');
+			this.packages.find('.loaded').removeClass('loaded');
 		}
 	};
 
