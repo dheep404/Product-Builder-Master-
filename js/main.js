@@ -1,5 +1,3 @@
-
-
 jQuery(document).ready(function ($) {
 	function ProductBuilder(element) {
 		this.element = element;
@@ -107,6 +105,7 @@ jQuery(document).ready(function ($) {
 			//this function may need to be updated according to your builder steps and summary
 			var step = $(this);
 
+			//Finding the selected packages 
 			if ($(this).data('selection') != 'packages') {
 				var selectedOptions = $(this).find('.js-option.selected')
 
@@ -123,9 +122,10 @@ jQuery(document).ready(function ($) {
 
 		});
 
-		if (!optionsContent) optionsContent = "<li><p>No Accessories selected;</p></li>"
+		// If options content does not exist display this text
+		if (!optionsContent) optionsContent = "<li><p>No Accessories selected</p></li>"
 
-
+		// Removing the selected options when clicked off
 		console.log(optionsContent)
 		self.summary.find('.summary-accessories').children('li').remove().end().append($(optionsContent));
 
