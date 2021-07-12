@@ -101,7 +101,6 @@ jQuery(document).ready(function ($) {
 		var self = this;
 		this.steps.each(function () {
 			//this function may need to be updated according to your builder steps and summary
-
 			var step = $(this);
 			if ($(this).data('selection') == 'accessories') {
 				// move to summary page
